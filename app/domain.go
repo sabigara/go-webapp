@@ -10,11 +10,6 @@ type User struct {
 	Email string `json:"email"`
 }
 
-type UserUsecase interface {
-	Create(name, email string) *User
-	Get(id string) *User
-}
-
 func NewUser(name, email string) *User {
 	return &User{
 		ID:    uuid.New().String(),
