@@ -7,7 +7,9 @@ import (
 
 type UserRepository struct{}
 
-var _ app.UserRepository = &UserRepository{}
+func NewUserRepository() *UserRepository {
+	return &UserRepository{}
+}
 
 var registory = make(map[string]*app.User)
 

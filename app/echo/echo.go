@@ -8,8 +8,14 @@ import (
 	"github.com/sabigara/go-webapp/app"
 )
 
+// UserHandler implements HandlerFunc methods for User domain.
 type UserHandler struct {
 	app.UserUsecase
+}
+
+// NewUserHandler returns new UserHandler
+func NewUserHandler(userUsecase app.UserUsecase) *UserHandler {
+	return &UserHandler{UserUsecase: userUsecase}
 }
 
 func (h *UserHandler) post(c echo.Context) error {
@@ -35,14 +41,19 @@ func (h *UserHandler) get(c echo.Context) error {
 
 var userHandler *UserHandler
 
-// Inject injects dependencies for handlers
-func Inject(user *UserHandler) {
+// SetHandlers sets all handlers with their all dependencies injected.
+func SetHandlers(user *UserHandler) {
 	userHandler = user
 }
 
-// Start starts server after settings routes
-func Start(addr string) {
+// Start starts server after settings routes.
+func Start(addr string, debug bool) {
 	e := echo.New()
+	e.HideBanner = true
+	if debug {
+		e.Debug = true
+	}
+
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
@@ -50,5 +61,5 @@ func Start(addr string) {
 	e.POST("/users", userHandler.post)
 	e.GET("/users/:id", userHandler.get)
 
-	e.Logger.Fatal(e.Start(addr))
+	e.Start(addr)
 }

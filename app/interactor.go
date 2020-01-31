@@ -4,7 +4,9 @@ type UserInteractor struct {
 	UserRepository
 }
 
-var _ UserUsecase = &UserInteractor{}
+func NewUserInteractor(userRepository UserRepository) *UserInteractor {
+	return &UserInteractor{UserRepository: userRepository}
+}
 
 func (interactor *UserInteractor) Create(name, email string) *User {
 	user := NewUser(name, email)
