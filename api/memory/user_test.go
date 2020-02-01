@@ -23,13 +23,16 @@ func TestCreateUserService(t *testing.T) {
 
 func TestGetUserService(t *testing.T) {
 	assert := assert.New(t)
+
 	expected := &api.User{
 		ID:    "id",
 		Name:  "sabigara",
 		Email: "sabigara@example.com",
 	}
-	us := NewUserService()
 	registory["id"] = expected
+	defer delete(registory, "id")
+
+	us := NewUserService()
 	actual, err := us.Get("id")
 	assert.IsType(expected, actual)
 	assert.Equal(expected.ID, actual.ID)
