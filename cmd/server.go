@@ -3,17 +3,15 @@ package main
 import (
 	"os"
 
-	"github.com/sabigara/go-webapp/app"
-	"github.com/sabigara/go-webapp/app/echo"
-	"github.com/sabigara/go-webapp/app/memory"
+	"github.com/sabigara/go-webapp/api/http"
+	"github.com/sabigara/go-webapp/api/memory"
 )
 
 func inject() {
-	userRepository := memory.NewUserRepository()
-	userInteractor := app.NewUserInteractor(userRepository)
-	userHandler := echo.NewUserHandler(userInteractor)
-	
-	echo.SetHandlers(userHandler)
+	userService := memory.NewUserService()
+	userHandler := http.NewUserHandler(userService)
+
+	http.SetHandlers(userHandler)
 }
 
 func main() {
@@ -29,5 +27,5 @@ func main() {
 
 	inject()
 
-	echo.Start(addr, debug)
+	http.Start(addr, debug)
 }

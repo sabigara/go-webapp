@@ -1,4 +1,4 @@
-package app
+package api
 
 import (
 	"github.com/google/uuid"
@@ -16,4 +16,9 @@ func NewUser(name, email string) *User {
 		Name:  name,
 		Email: email,
 	}
+}
+
+type UserService interface {
+	Create(name, email string) (*User, error)
+	Get(id string) (*User, error)
 }
