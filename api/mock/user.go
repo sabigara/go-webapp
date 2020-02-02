@@ -5,7 +5,7 @@ import (
 )
 
 type UserService struct {
-	CreateRet      func() (*api.User, error)
+	CreateRet     func() (*api.User, error)
 	CreateInvoked bool
 
 	GetRet     func() (*api.User, error)

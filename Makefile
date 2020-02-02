@@ -14,3 +14,7 @@ dev:
 .PHONY: test
 test:
 	@go test ./api/... 
+
+.PHONY: fmt
+fmt:
+	@go fmt ./api/... ./cmd/...  
