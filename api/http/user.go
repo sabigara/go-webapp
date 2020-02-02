@@ -1,6 +1,8 @@
 package http
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -20,11 +22,11 @@ func NewUserHandler(userService api.UserService) *UserHandler {
 func (h *UserHandler) post(c echo.Context) error {
 	m := map[string]string{}
 	if err := c.Bind(&m); err != nil {
-		return err
+		return fmt.Errorf("http post: %w", err)
 	}
 	user, err := h.UserService.Create(m["name"], m["email"])
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		return fmt.Errorf("http post: %w", err)
 	}
 	c.JSON(http.StatusCreated, user)
 	return nil
@@ -34,7 +36,9 @@ func (h *UserHandler) get(c echo.Context) error {
 	id := c.Param("id")
 	user, err := h.UserService.Get(id)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusNotFound)
+		if errors.Is(err, api.ErrResourceNotFound) {
+			return echo.NewHTTPError(http.StatusNotFound)
+		}
 	}
 	c.JSON(http.StatusOK, user)
 	return nil

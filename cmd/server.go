@@ -1,31 +1,41 @@
 package main
 
 import (
+	"database/sql"
 	"os"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/sabigara/go-webapp/api/http"
-	"github.com/sabigara/go-webapp/api/memory"
+	"github.com/sabigara/go-webapp/api/mysql"
 )
 
+func openDB() *sql.DB {
+	db, err := sql.Open("mysql", "user:userpass@tcp(db:3306)/database")
+	if err != nil {
+		panic(err.Error)
+	}
+	db.SetConnMaxLifetime(0)
+	db.SetMaxIdleConns(50)
+	db.SetMaxOpenConns(50)
+	return db
+}
+
 func inject() {
-	userService := memory.NewUserService()
+	db := openDB()
+	userService := mysql.NewUserService(db)
 	userHandler := http.NewUserHandler(userService)
 
 	http.SetHandlers(userHandler)
 }
 
 func main() {
-	var addr string
+	addr := "0.0.0.0:1323"
 	var debug bool
-	if val := os.Getenv("DEBUG"); val == "false" {
-		debug = false
-		addr = "0.0.0.0:1323"
-	} else {
+	if val := os.Getenv("DEBUG"); val == "true" {
 		debug = true
-		addr = "localhost:1323"
+	} else {
+		debug = false
 	}
-
 	inject()
-
 	http.Start(addr, debug)
 }
