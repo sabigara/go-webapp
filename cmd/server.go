@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"os"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sabigara/go-webapp/api/http"
@@ -14,9 +15,9 @@ func openDB() *sql.DB {
 	if err != nil {
 		panic(err.Error)
 	}
-	db.SetConnMaxLifetime(0)
-	db.SetMaxIdleConns(50)
-	db.SetMaxOpenConns(50)
+	db.SetConnMaxLifetime(5 * time.Minute)
+	db.SetMaxIdleConns(25)
+	db.SetMaxOpenConns(25)
 	return db
 }
 
