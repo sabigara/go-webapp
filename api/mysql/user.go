@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
-
 	"github.com/sabigara/go-webapp/api"
 )
 
