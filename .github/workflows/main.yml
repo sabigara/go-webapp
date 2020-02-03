@@ -7,6 +7,5 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - uses: ./ # Uses an action in the root directory
     - name: Test
       uses: ./.github/actions/golang
