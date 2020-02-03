@@ -9,30 +9,28 @@ import (
 	"github.com/sabigara/go-webapp/api"
 )
 
-type UserService struct {
+type UserRepository struct {
 	*sql.DB
 }
 
-func NewUserService(db *sql.DB) *UserService {
-	return &UserService{DB: db}
+func NewUserRepository(db *sql.DB) *UserRepository {
+	return &UserRepository{DB: db}
 }
 
-func (us *UserService) Create(name, email string) (*api.User, error) {
-	u := api.NewUser(name, email)
-	_, err := us.Exec(
+func (ur *UserRepository) Save(user *api.User) error {
+	_, err := ur.Exec(
 		`INSERT INTO user (id, name, email)
 		 VALUES (?, ?, ?)`,
-		u.ID, u.Name, u.Email,
+		user.ID, user.Name, user.Email,
 	)
 	if err != nil {
-		return nil, fmt.Errorf("mysql Create: %w", err)
+		return fmt.Errorf("mysql.user_repository.Create: %w", err)
 	}
-
-	return u, nil
+	return nil
 }
 
-func (us *UserService) Get(id string) (u *api.User, err error) {
-	row := us.QueryRow(
+func (ur *UserRepository) Get(id string) (u *api.User, err error) {
+	row := ur.QueryRow(
 		`SELECT id, name, email
 		 FROM user
 		 WHERE id = ?`,
@@ -44,7 +42,7 @@ func (us *UserService) Get(id string) (u *api.User, err error) {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, api.ErrResourceNotFound
 		}
-		return nil, fmt.Errorf("mysql Get: %w", err)
+		return nil, fmt.Errorf("mysql.user_repository.Get: %w", err)
 	}
 	return
 }

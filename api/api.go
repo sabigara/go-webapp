@@ -18,7 +18,12 @@ func NewUser(name, email string) *User {
 	}
 }
 
-type UserService interface {
+type UserUsecase interface {
 	Create(name, email string) (*User, error)
+	Get(id string) (*User, error)
+}
+
+type UserRepository interface {
+	Save(*User) error
 	Get(id string) (*User, error)
 }

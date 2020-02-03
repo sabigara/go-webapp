@@ -8,6 +8,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sabigara/go-webapp/api/http"
+	"github.com/sabigara/go-webapp/api/interactor"
 	"github.com/sabigara/go-webapp/api/mysql"
 )
 
@@ -32,8 +33,9 @@ func openDB() *sql.DB {
 
 func inject() {
 	db := openDB()
-	userService := mysql.NewUserService(db)
-	userHandler := http.NewUserHandler(userService)
+	userRepository := mysql.NewUserRepository(db)
+	userInteractor := interactor.NewUserInteractor(userRepository)
+	userHandler := http.NewUserHandler(userInteractor)
 
 	http.SetHandlers(userHandler)
 }

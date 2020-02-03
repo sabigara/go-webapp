@@ -32,17 +32,17 @@ func TestPostUser(t *testing.T) {
 		Name:  "sabigara",
 		Email: "sabigara@example.com",
 	}
-	us := &mock.UserService{
+	ui := &mock.UserInteractor{
 		CreateRet: func() (*api.User, error) {
 			return user, nil
 		},
 	}
-	uh := NewUserHandler(us)
+	uh := NewUserHandler(ui)
 	err := uh.post(ctx)
 	assert.Nil(err)
 	assert.Equal(http.StatusCreated, rec.Code)
 	assert.JSONEq(expected, rec.Body.String())
-	assert.True(us.CreateInvoked)
+	assert.True(ui.CreateInvoked)
 }
 
 func TestGetUser(t *testing.T) {
@@ -56,7 +56,7 @@ func TestGetUser(t *testing.T) {
 		Name:  "sabigara",
 		Email: "sabigara@example.com",
 	}
-	us := &mock.UserService{
+	us := &mock.UserInteractor{
 		GetRet: func() (*api.User, error) {
 			return user, nil
 		},
