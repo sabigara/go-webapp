@@ -1,7 +1,13 @@
 # https://app.getpocket.com/read/2871142125
 
 FROM golang:1.13-alpine as builder
-RUN apk add make
+RUN apk add make curl
+# Install migrate command to /bin.
+WORKDIR /bin
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.8.0/migrate.linux-amd64.tar.gz \
+    | tar xvz \
+    && mv migrate.linux-amd64 migrate
+# Install source code and build.
 RUN mkdir /build 
 ADD . /build/
 WORKDIR /build
