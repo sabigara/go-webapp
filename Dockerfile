@@ -11,6 +11,8 @@ RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.8.0/m
 RUN mkdir /build 
 ADD . /build/
 WORKDIR /build
+# Run DB migration.
+RUN make migrate-up
 # Set environment variable here to avoid error 
 # that happens when running go test in builder container.
 # https://github.com/golang/go/issues/27303
