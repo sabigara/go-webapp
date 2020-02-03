@@ -1,0 +1,14 @@
+on: [push]
+
+jobs:
+  test_golang_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - uses: ./ # Uses an action in the root directory
+    
+    - name: Test
+      uses: actions/golang
