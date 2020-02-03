@@ -5,10 +5,5 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to say hello
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    
-    - uses: ./ # Uses an action in the root directory
-    
     - name: Test
-      uses: actions/golang
+      uses: ./.github/actions/golang
