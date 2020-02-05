@@ -18,7 +18,7 @@ func TestCreateUserInteractor(t *testing.T) {
 		SaveRet: func() error { return nil },
 	}
 	us := NewUserInteractor(ur)
-	actual, err := us.Create("sabigara", "sabigara@example.com")
+	actual, err := us.Create("sabigara", "sabigara@example.com", "password")
 	assert.True(ur.SaveInvoked)
 	assert.IsType(expected, actual)
 	assert.Equal(expected.Name, actual.Name)
@@ -37,7 +37,7 @@ func TestGetUserService(t *testing.T) {
 		GetRet: func() (*api.User, error) { return expected, nil },
 	}
 	ui := NewUserInteractor(ur)
-	actual, err := ui.Get("id")
+	actual, err := ui.GetById("id")
 	assert.True(ur.GetInvoked)
 	assert.IsType(expected, actual)
 	assert.Equal(expected.ID, actual.ID)
@@ -52,7 +52,7 @@ func TestGetUserServiceErr(t *testing.T) {
 		GetRet: func() (*api.User, error) { return nil, api.ErrResourceNotFound },
 	}
 	ui := NewUserInteractor(ur)
-	actual, err := ui.Get("id")
+	actual, err := ui.GetById("id")
 	assert.Nil(actual)
 	assert.Equal("interactor.user_usecase.Get: resource not found", err.Error())
 }

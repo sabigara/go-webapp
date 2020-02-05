@@ -12,12 +12,12 @@ type UserInteractor struct {
 	GetInvoked bool
 }
 
-func (us *UserInteractor) Create(name, email string) (*api.User, error) {
-	us.CreateInvoked = true
-	return us.CreateRet()
+func (ui *UserInteractor) Create(name, email, password string) (*api.User, error) {
+	ui.CreateInvoked = true
+	return ui.CreateRet()
 }
 
-func (us *UserInteractor) Get(id string) (*api.User, error) {
-	us.GetInvoked = true
-	return us.GetRet()
+func (ui *UserInteractor) GetById(id string) (*api.User, error) {
+	ui.GetInvoked = true
+	return ui.GetRet()
 }

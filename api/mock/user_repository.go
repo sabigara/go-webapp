@@ -16,7 +16,11 @@ func (ur *UserRepository) Save(user *api.User) error {
 	return ur.SaveRet()
 }
 
-func (ur *UserRepository) Get(id string) (*api.User, error) {
+func (ur *UserRepository) GetById(id string) (*api.User, error) {
 	ur.GetInvoked = true
+	return ur.GetRet()
+}
+
+func (ur *UserRepository) GetByEmail(email string) (*api.User, error) {
 	return ur.GetRet()
 }
